@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gresources>
+  <gresource prefix="/com/github/codigocristo/instalarch">
+    <file>gtk/instalarch.ui</file>
+    <file>icons/arch-logo.png</file>
+    <file>icons/arch-logo-white.png</file>
+    <file>icons/logo.svg</file>
+  </gresource>
+</gresources>
