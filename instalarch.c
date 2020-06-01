@@ -1,3 +1,8 @@
+//Créditos: 
+// @Miqueas2020
+// @nahuelwexd
+// @Bourne_Again
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <glib.h>
