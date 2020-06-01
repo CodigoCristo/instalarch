@@ -39,7 +39,7 @@ GdkPixbuf *FnPixbufCreate(const gchar * filename)
 {
    GdkPixbuf *pixbuf;
    GError *error = NULL;
-   pixbuf = gdk_pixbuf_new_from_file(filename, &error);
+   pixbuf = gdk_pixbuf_new_from_resource(g_strconcat ("/com/github/codigocristo/instalarch/icons/", filename, NULL), &error);
 
    if(!pixbuf)
    {
@@ -167,7 +167,9 @@ int main(int argc, char *argv[])
 	
 	gtk_init(&argc, &argv);
 
-	builder = gtk_builder_new_from_file ("instalarch.ui");
+  gtk_icon_theme_add_resource_path (gtk_icon_theme_get_default (), "/com/github/codigocristo/instalarch/icons");
+
+	builder = gtk_builder_new_from_resource ("/com/github/codigocristo/instalarch/gtk/instalarch.ui");
 	window = GTK_WIDGET(gtk_builder_get_object(builder, "window"));
 	
 	// Coloca el Título
