@@ -504,7 +504,7 @@ para posteriormente asignarlos correctamente.</property>
                         <child>
                           <object class="GtkButton" id="gparted">
                             <property name="label" translatable="yes">  Abrir GParted</property>
-                            <property name="width_request">100</property>
+                            <property name="width_request">150</property>
                             <property name="height_request">20</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
@@ -530,7 +530,7 @@ para posteriormente asignarlos correctamente.</property>
                             </attributes>
                           </object>
                           <packing>
-                            <property name="x">10</property>
+                            <property name="x">15</property>
                           </packing>
                         </child>
                       </object>
@@ -809,7 +809,7 @@ para posteriormente asignarlos correctamente.</property>
                 </child>
                 <child>
                   <object class="GtkButton" id="siguiente">
-                    <property name="label" translatable="yes">   Siguiente</property>
+                    <property name="label" translatable="yes">     Siguiente</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>

@@ -5,6 +5,9 @@
 
 // sudo GTK_THEME=Breeze:dark ./instalarch
 
+// breeze-gtk
+// papirus-icon-theme 
+
 
 #include <stdio.h>
 #include <stdlib.h>
