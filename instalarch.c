@@ -3,6 +3,9 @@
 // @nahuelwexd
 // @Bourne_Again
 
+// sudo GTK_THEME=Breeze:dark ./instalarch
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <glib.h>
@@ -21,13 +24,16 @@
 #define _(String) gettext (String)
 #define N_(String) String
 
+
+
+
+
 GtkWidget		*window;
 GtkWidget 		*fondo;
 GtkWidget 		*sidebar;
 GtkWidget 		*panel;
 GtkWidget 		*control;
 GtkWidget 		*stack;
-GtkWidget 		*sig;
 GtkWidget 		*atras;
 GtkWidget 		*siguiente;
 GtkWidget 		*titulo;
@@ -35,8 +41,13 @@ GtkWidget 		*gparted;
 GtkWidget 		*select_disco;
 GtkWidget 		*select_idioma1;
 GtkWidget 		*select_idioma2;
-
-
+GtkWidget 		*borrar;
+GtkWidget 		*select_disco1;
+GtkWidget 		*select_disco2;
+GtkListStore 	*list;
+GtkTreeModel 	*model;
+	
+	
 GtkBuilder		*builder;
 
 
@@ -59,11 +70,12 @@ GdkPixbuf *FnPixbufCreate(const gchar * filename)
 
 static void
 on_back_button_clicked (GtkButton *button, GtkStack *stack)
-{
+{ 
   const gchar *seq[] = { "Bienvenido", "Idioma", "Discos", "Particiones", "Usuario", "Escritorio", "Programas", "Extras", "Instalación", "Finalizar" };
   const gchar *vis;
   gint i;
-
+  clearlocations();
+  initlocations();
   vis = gtk_stack_get_visible_child_name (stack);
 
   for (i = 1; i < G_N_ELEMENTS (seq); i++)
@@ -96,6 +108,8 @@ on_forward_button_clicked (GtkButton *button, GtkStack *stack)
 }
 
 
+
+
 static void
 update_back_button_sensitivity (GtkStack *stack, GParamSpec *pspec, GtkWidget *button)
 {
@@ -114,7 +128,106 @@ update_forward_button_sensitivity (GtkStack *stack, GParamSpec *pspec, GtkWidget
   gtk_widget_set_sensitive (button, g_strcmp0 (vis, "Finalizar") != 0);
 }
 
+static void
+set_visible_child_name (GtkWidget *button, gpointer data)
+{
+  gtk_stack_set_visible_child_name (GTK_STACK (stack), (const char *)data);
+}
 
+
+
+
+
+
+
+
+
+void initlocations() {
+	GtkComboBox *listwidget;
+	GtkTreeIter iter;
+	GtkListStore *list;
+	gchar **lines, *output, *device;
+	gint i;
+	gint status;
+	
+	listwidget = (GtkComboBox *) gtk_builder_get_object(builder, "select_disco");
+	list = (GtkListStore *) gtk_combo_box_get_model(listwidget);
+	int select_disco_count = 0;
+	g_spawn_command_line_sync("sudo sh ./src/disco.sh disco", &output, NULL, &status, NULL);
+	if (status == 0) {
+		lines = g_strsplit(output, "\n", 0);
+		for (i=0; lines[i] != NULL && strlen(lines[i])>0; i++) {
+			gtk_list_store_append(list, &iter);
+			gtk_list_store_set(list, &iter, 0, lines[i], -1);
+		}
+		select_disco_count = i;
+		g_strfreev(lines);
+	}
+	g_free(output);
+	if (select_disco_count != 0){
+		//system("echo hola");
+	}
+
+	//
+	listwidget = (GtkComboBox *) gtk_builder_get_object(builder, "select_idioma1");
+	list = (GtkListStore *) gtk_combo_box_get_model(listwidget);
+	int select_idioma_count = 0;
+	g_spawn_command_line_sync("sudo sh ./src/disco.sh key-sistema", &output, NULL, &status, NULL);
+	if (status == 0) {
+		lines = g_strsplit(output, "\n", 0);
+		for (i=0; lines[i] != NULL && strlen(lines[i])>0; i++) {
+			gtk_list_store_append(list, &iter);
+			gtk_list_store_set(list, &iter, 0, lines[i], -1);
+		}
+		select_idioma_count = i;
+		g_strfreev(lines);
+	}
+	g_free(output);
+	if (select_idioma_count != 0){
+		//system("echo hola");
+	}
+
+
+
+		//
+	listwidget = (GtkComboBox *) gtk_builder_get_object(builder, "select_idioma2");
+	list = (GtkListStore *) gtk_combo_box_get_model(listwidget);
+	int select_idioma2_count = 0;
+	g_spawn_command_line_sync("sudo sh ./src/disco.sh key-terminal", &output, NULL, &status, NULL);
+	if (status == 0) {
+		lines = g_strsplit(output, "\n", 0);
+		for (i=0; lines[i] != NULL && strlen(lines[i])>0; i++) {
+			gtk_list_store_append(list, &iter);
+			gtk_list_store_set(list, &iter, 0, lines[i], -1);
+		}
+		select_idioma2_count = i;
+		g_strfreev(lines);
+	}
+	g_free(output);
+	if (select_idioma2_count != 0){
+		//system("echo hola");
+	}
+
+}
+
+void clearlocations() {
+	GtkComboBox *listwidget;
+	GtkListStore *list;
+	// clear copydevices
+	listwidget = (GtkComboBox *) gtk_builder_get_object(builder, "select_disco");
+	list = (GtkListStore *) gtk_combo_box_get_model(listwidget);
+	gtk_list_store_clear (list) ;	
+
+	listwidget = (GtkComboBox *) gtk_builder_get_object(builder, "select_idioma1");
+	list = (GtkListStore *) gtk_combo_box_get_model(listwidget);
+	gtk_list_store_clear (list) ;	
+
+	listwidget = (GtkComboBox *) gtk_builder_get_object(builder, "select_idioma2");
+	list = (GtkListStore *) gtk_combo_box_get_model(listwidget);
+	gtk_list_store_clear (list) ;	
+
+
+}
 
 
 int main(int argc, char *argv[])
@@ -134,7 +247,7 @@ int main(int argc, char *argv[])
 	g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 	gtk_builder_connect_signals(builder, NULL);
 
-
+	list = GTK_LIST_STORE(model);
 	fondo = GTK_WIDGET(gtk_builder_get_object(builder, "fondo"));
 	titulo = GTK_WIDGET(gtk_builder_get_object(builder, "titulo"));
 	stack = GTK_WIDGET(gtk_builder_get_object(builder, "stack"));
@@ -142,26 +255,23 @@ int main(int argc, char *argv[])
 	select_disco = GTK_WIDGET(gtk_builder_get_object(builder, "select_disco"));
 	select_idioma1 = GTK_WIDGET(gtk_builder_get_object(builder, "select_idioma1"));
 	select_idioma2 = GTK_WIDGET(gtk_builder_get_object(builder, "select_idioma2"));
-	
-	gtk_widget_set_sensitive ((GtkWidget *) gtk_builder_get_object(builder, "select_disco"), TRUE);
-	gtk_widget_set_sensitive ((GtkWidget *) gtk_builder_get_object(builder, "select_idioma1"), TRUE);
-	gtk_widget_set_sensitive ((GtkWidget *) gtk_builder_get_object(builder, "select_idioma2"), TRUE);
-
+	select_disco1 = GTK_WIDGET(gtk_builder_get_object(builder, "select_disco1"));
+	select_disco2 = GTK_WIDGET(gtk_builder_get_object(builder, "select_disco2"));
 
 	  atras = GTK_WIDGET(gtk_builder_get_object(builder, "atras"));
 	  g_signal_connect (atras, "clicked", (GCallback) on_back_button_clicked, stack);
 	  g_signal_connect (stack, "notify::visible-child-name",
 	                    (GCallback)update_back_button_sensitivity, atras);
 
-
 	  siguiente = GTK_WIDGET(gtk_builder_get_object(builder, "siguiente"));
 	  g_signal_connect (siguiente, "clicked", (GCallback) on_forward_button_clicked, stack);
-	  g_signal_connect (stack, "notify::visible-child-name",
-	                    (GCallback)update_forward_button_sensitivity, siguiente);
+	  g_signal_connect (stack, "notify::visible-child-name", (GCallback)update_forward_button_sensitivity, siguiente);
 	
+	  g_signal_connect (select_disco1, "clicked", (GCallback) set_visible_child_name, (gpointer) "Particiones");
+	  g_signal_connect (select_disco2, "clicked", (GCallback) set_visible_child_name, (gpointer) "Usuario");
 
 
-	  // Variable para el Color
+	  	  // Variable para el Color
 	  GdkColor color_panel;
 	  GdkColor color_titulo;
 	  // Establecemos el Color
@@ -176,9 +286,12 @@ int main(int argc, char *argv[])
 
 
 
+	  
+	  
 
              
-
+	initlocations();
+  
 	gtk_widget_show_all (window);
 	
 	gtk_main ();

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.22.1 -->
+<interface>
+  <requires lib="gtk+" version="3.20"/>
+  <object class="GtkWindow" id="window">
+    <property name="can_focus">False</property>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <object class="GtkFixed" id="fixed1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkButton" id="button1">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="tooltip_text" translatable="yes">Click Me!</property>
+            <property name="always_show_image">True</property>
+            <signal name="clicked" handler="on_button1_clicked" swapped="no"/>
+            <child>
+              <object class="GtkImage" id="floppy">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="stock">gtk-floppy</property>
+                <property name="icon_size">6</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="x">36</property>
+            <property name="y">40</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label1">
+            <property name="width_request">205</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="tooltip_text" translatable="yes">I am a label hiding here.</property>
+            <property name="label" translatable="yes">label 1</property>
+            <attributes>
+              <attribute name="font-desc" value="Sans Bold Italic 10"/>
+              <attribute name="foreground" value="#efef29292929"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="x">197</property>
+            <property name="y">216</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label2">
+            <property name="width_request">205</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">label2</property>
+          </object>
+          <packing>
+            <property name="x">197</property>
+            <property name="y">238</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRadioButton" id="radio1">
+            <property name="label" translatable="yes">radio button</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="active">True</property>
+            <property name="draw_indicator">True</property>
+            <signal name="toggled" handler="on_radio1_toggled" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">240</property>
+            <property name="y">18</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRadioButton" id="radio2">
+            <property name="label" translatable="yes">radio button</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="active">True</property>
+            <property name="draw_indicator">True</property>
+            <property name="group">radio1</property>
+            <signal name="toggled" handler="on_radio2_toggled" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">241</property>
+            <property name="y">44</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRadioButton" id="radio3">
+            <property name="label" translatable="yes">radio button</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="active">True</property>
+            <property name="draw_indicator">True</property>
+            <property name="group">radio1</property>
+            <signal name="toggled" handler="on_radio3_toggled" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">240</property>
+            <property name="y">72</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkCheckButton" id="check1">
+            <property name="label" translatable="yes">check button</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="draw_indicator">True</property>
+            <signal name="toggled" handler="on_check1_toggled" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">240</property>
+            <property name="y">100</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
