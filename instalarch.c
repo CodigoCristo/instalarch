@@ -278,7 +278,8 @@ int main(int argc, char *argv[])
 	  g_signal_connect (select_disco2, "clicked", (GCallback) set_visible_child_name, (gpointer) "Usuario");
 
 
-	  gtk_widget_set_sensitive ((GtkWidget *) gtk_builder_get_object(builder, "control"), FALSE);
+	  // desactiva el control de los stack
+	  //gtk_widget_set_sensitive ((GtkWidget *) gtk_builder_get_object(builder, "control"), FALSE);
 
 	  	  // Variable para el Color
 	  GdkColor color_panel;
