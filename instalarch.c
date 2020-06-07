@@ -79,6 +79,8 @@ on_back_button_clicked (GtkButton *button, GtkStack *stack)
   gint i;
   clearlocations();
   initlocations();
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (select_disco1), FALSE);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (select_disco2), FALSE);
   vis = gtk_stack_get_visible_child_name (stack);
 
   for (i = 1; i < G_N_ELEMENTS (seq); i++)
@@ -273,6 +275,8 @@ int main(int argc, char *argv[])
 	  g_signal_connect (select_disco1, "clicked", (GCallback) set_visible_child_name, (gpointer) "Particiones");
 	  g_signal_connect (select_disco2, "clicked", (GCallback) set_visible_child_name, (gpointer) "Usuario");
 
+
+	  gtk_widget_set_sensitive ((GtkWidget *) gtk_builder_get_object(builder, "control"), FALSE);
 
 	  	  // Variable para el Color
 	  GdkColor color_panel;
