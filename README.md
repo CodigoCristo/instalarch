@@ -6,4 +6,10 @@ Usa el tema breeze
 
 La ejecución de todos los programas son como administrador.
 
+Paso 1:
+
+```make```
+
+Paso 2:
+
 ```sudo GTK_THEME=Breeze:dark ./instalarch```
