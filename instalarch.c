@@ -7,7 +7,9 @@
 
 // breeze-gtk
 // papirus-icon-theme 
-
+// git add .
+// git commit -m 'instalarch'
+// git push -f origin master
 
 #include <stdio.h>
 #include <stdlib.h>
