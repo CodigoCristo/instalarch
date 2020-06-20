@@ -3,33 +3,36 @@
 GtkApplication   *app;
 GtkBuilder       *builder;
 GtkWindow        *window;
-GtkButton        *boton;
-GtkLabel         *resultado;
+GtkSwitch        *switch1;
+GtkLabel         *usuario;
+GtkFrame         *frame;
+GtkSpinner       *spinner;
 
+void on_switch_state_set(GtkSwitch *switch1) {
 
-void on_boton_clicked(GtkButton *btn, gpointer data) {
-
-    char* zona_horaria;
-    g_spawn_command_line_sync ("sh script.sh", &zona_horaria, NULL, NULL, NULL);
-    gtk_label_set_label (resultado, zona_horaria);
-    printf("Tu zona horaria es: %s \n", zona_horaria);
-
+    gboolean T = gtk_switch_get_active(switch1);
+    if (T) gtk_spinner_start (spinner),
+    gtk_widget_set_sensitive ((GtkWidget *) gtk_builder_get_object(builder, "frame"), TRUE);
+  
+    else gtk_spinner_stop(spinner),
+    gtk_widget_set_sensitive ((GtkWidget *) gtk_builder_get_object(builder, "frame"), FALSE);
 }
 	
 
 void appActivate(GtkApplication *app, gpointer data) {
   // Cargamos la interfaz y asignamos los objetos
-  builder       	= (GtkBuilder*)    gtk_builder_new_from_file("zonahoraria.glade");
+  builder       	= (GtkBuilder*)    gtk_builder_new_from_file("switch.glade");
   window         	= (GtkWindow*)     gtk_builder_get_object(builder, "window");
-  boton          	= (GtkButton*)     gtk_builder_get_object(builder, "boton");
-  resultado      	= (GtkLabel*)      gtk_builder_get_object(builder, "resultado");
+  switch1         = (GtkSwitch*)     gtk_builder_get_object(builder, "switch1");
+  spinner         = (GtkSpinner*)     gtk_builder_get_object(builder, "spinner");
+  frame           = (GtkFrame*)      gtk_builder_get_object(builder, "frame");
+  usuario      	  = (GtkLabel*)      gtk_builder_get_object(builder, "usuario");
 
 
+  gtk_widget_set_sensitive ((GtkWidget *) gtk_builder_get_object(builder, "frame"), FALSE);
 
   // Conectamos signals correspondientes
-  g_signal_connect(boton, "clicked", (GCallback) on_boton_clicked, NULL);
-
-
+  gtk_builder_connect_signals (builder, NULL);
   // Mostramos todos los widgets dentro de "window"
   gtk_widget_show_all((GtkWidget*) window);
   // Y agregamos nuestra ventana a la applicación :)

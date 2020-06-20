@@ -6,7 +6,7 @@
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Texto</property>
     <property name="window_position">center</property>
-    <property name="default_width">500</property>
+    <property name="default_width">400</property>
     <property name="default_height">250</property>
     <child>
       <object class="GtkLayout">
@@ -18,12 +18,13 @@
             <property name="height_request">80</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Tu zona Horaria es: </property>
             <attributes>
-              <attribute name="font-desc" value="Open Sans Bold 11"/>
+              <attribute name="font-desc" value="Open Sans 11"/>
             </attributes>
           </object>
           <packing>
-            <property name="x">100</property>
+            <property name="x">55</property>
             <property name="y">100</property>
           </packing>
         </child>
@@ -39,8 +40,25 @@
             <signal name="clicked" handler="on_boton_clicked" swapped="no"/>
           </object>
           <packing>
-            <property name="x">20</property>
-            <property name="y">20</property>
+            <property name="x">70</property>
+            <property name="y">50</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="resultado">
+            <property name="width_request">100</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">
+</property>
+            <attributes>
+              <attribute name="font-desc" value="Open Sans Bold 11"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="x">200</property>
+            <property name="y">100</property>
           </packing>
         </child>
       </object>

@@ -7,57 +7,70 @@ GtkApplication   *app;
 GtkBuilder       *builder;
 GtkWindow        *window;
 GtkComboBox      *combo1; 
-GtkComboBox      *combo2;
+GtkLabel         *resultado; 
 
+GtkTreeIter      iter;
 GtkListStore     *list;
+GtkComboBox      *listwidget;
 GtkTreeModel     *model;
+
+void comboChange(GtkWidget* widget, gpointer data) {
+  
+  gchar *disco_select;
+  gchar *commandline, **command;
+
+  listwidget = (GtkComboBox *) gtk_builder_get_object(builder, "combo1");
+  gtk_combo_box_get_active_iter(listwidget, &iter);
+  list = (GtkListStore *) gtk_combo_box_get_model(listwidget);
+  gtk_tree_model_get((GtkTreeModel *) list, &iter, 0, &disco_select, -1);
+  if (strlen(disco_select) == 0) {
+    g_free(disco_select);
+    disco_select = g_strdup(NULL);         
+  }
+
+  gtk_label_set_label(resultado, disco_select);
+
+  printf("Disco Seleccionado: %s \n", disco_select);
+
+  // Ejecutar un comando usando la variable guardada
+  commandline = g_strdup_printf("echo %s" , disco_select);
+
+  g_shell_parse_argv(commandline, NULL, &command, NULL);
+  g_free(commandline);
+  g_spawn_async(NULL, command, NULL, G_SPAWN_SEARCH_PATH|G_SPAWN_DO_NOT_REAP_CHILD, NULL, NULL, NULL, NULL);
+
+
+}
 
 
 void initlocations() {
-  GtkComboBox *listwidget;
-  GtkTreeIter iter;
-  GtkListStore *list;
-  gchar **lines, *output, *device;
+  gchar **lines, *output;
   gint i;
   gint status;
-  
+
   listwidget = (GtkComboBox *) gtk_builder_get_object(builder, "combo1");
   list = (GtkListStore *) gtk_combo_box_get_model(listwidget);
-  int select_idiomaS_count = 0;
-  g_spawn_command_line_sync("sudo sh script.sh key-sistema", &output, NULL, &status, NULL);
+  int select_discos = 0;
+  g_spawn_command_line_sync("sudo sh script.sh disco", &output, NULL, &status, NULL);
   if (status == 0) {
     lines = g_strsplit(output, "\n", 0);
     for (i=0; lines[i] != NULL && strlen(lines[i])>0; i++) {
       gtk_list_store_append(list, &iter);
       gtk_list_store_set(list, &iter, 0, lines[i], -1);
     }
-    select_idiomaS_count = i;
+    select_discos = i;
     g_strfreev(lines);
   }
   g_free(output);
-  if (select_idiomaS_count != 0){
-    gtk_combo_box_set_active_iter(listwidget, &iter);
-  }
 
-  listwidget = (GtkComboBox *) gtk_builder_get_object(builder, "combo2");
-  list = (GtkListStore *) gtk_combo_box_get_model(listwidget);
-  int select_idiomaT_count = 0;
-  g_spawn_command_line_sync("sudo sh script.sh key-terminal", &output, NULL, &status, NULL);
-  if (status == 0) {
-    lines = g_strsplit(output, "\n", 0);
-    for (i=0; lines[i] != NULL && strlen(lines[i])>0; i++) {
-      gtk_list_store_append(list, &iter);
-      gtk_list_store_set(list, &iter, 0, lines[i], -1);
-    }
-    select_idiomaT_count = i;
-    g_strfreev(lines);
-  }
-  g_free(output);
-  if (select_idiomaT_count != 0){
-    gtk_combo_box_set_active_iter(listwidget, &iter);
-  }
+  //if (select_discos != 0){
+  // gtk_combo_box_set_active_iter(listwidget, &iter);
+  //}
 
 
+  //gtk_combo_box_get_active(listwidget);
+  //gtk_label_set_label(resultado, output);
+  //printf("Active text: %s\n", text);
 
 }
 
@@ -67,11 +80,12 @@ void appActivate(GtkApplication *app, gpointer data) {
   builder       	= (GtkBuilder*)    gtk_builder_new_from_file("menu.glade");
   window         	= (GtkWindow*)     gtk_builder_get_object(builder, "window");
   combo1          = (GtkComboBox*)   gtk_builder_get_object(builder, "combo1");
-  combo2          = (GtkComboBox*)   gtk_builder_get_object(builder, "combo2");
+  resultado       = (GtkLabel*)      gtk_builder_get_object(builder, "resultado");
   list            = (GtkListStore*)  gtk_builder_get_object(builder, "list");
   model           = (GtkTreeModel*)  gtk_builder_get_object(builder, "model");
   
   initlocations();
+  g_signal_connect (combo1, "changed", (GCallback) comboChange, NULL);
 
 
 
@@ -85,14 +99,11 @@ void appActivate(GtkApplication *app, gpointer data) {
 int main(int argc, char **argv) {
   int status;
 
-  // Creamos una nueva applicación
-  app = gtk_application_new("com.github.M1que4s.Instalarch", G_APPLICATION_FLAGS_NONE);
-  // Conectamos la función previa con nuestra appliación
+  app = gtk_application_new("com.github", G_APPLICATION_FLAGS_NONE);
   g_signal_connect(app, "activate", (GCallback) appActivate, NULL);
 
-  // Corremos la appliación
+
   status = g_application_run((GApplication*) app, argc, argv);
-  // Sinceramente, no sé que hace esto xd véase la documentación de GObject para más información.
   g_object_unref(app);
 
   return status;
